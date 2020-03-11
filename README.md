@@ -11,6 +11,8 @@ It has to be awaited, because I use asyncio.sleep() when waiting for a reply fro
 ## await write(server, option, value)
 Will return nothing. It just sets the value of the option in that server to a new value. If the server doesn't exist, it will raise a KeyError. 
 I made it, so it has to be awaited, for the sake of uniformity.
+The option name can't be an integer, in which case it would be converted into a string.
 
 ## await create(server)
 Will return nothing. It creates a new server. When that server already exists, it will do nothing.
+I made it, so it has to be awaited, for the sake of uniformity.
