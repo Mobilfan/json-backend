@@ -1,10 +1,10 @@
 import json, threading, asyncio, logging, time
 
 def _access_daemon(filename="data.json"):
-        logging.info('Access thread initialized.')
+	logging.info('Access thread initialized.')
+        cache = cache(10)
         #Customize this function to fit to the json structure used
         while True:
-                time.sleep(0.1)
                 if len(jsonQueue) != 0:
                         instruction = jsonQueue[0]
                         logging.info(f'New instruction:\n{instruction}')
@@ -23,17 +23,29 @@ def _access_daemon(filename="data.json"):
                         #1 is read
                         elif instruction["action"] == 1:
                                 option, server = instruction["option"]
-                                value = data[server][option]
-                                instruction["return"].append(value)
+                                value = cache.get( [option, server] )
+                                
+                                if value == None:
+                                        if option in data[server]:
+                                                value = data[server][option]
+                                                cache.append( (option, server), value)
+                                                instruction["return"].append(value)
+                                        else:
+                                                instruction["return"].append(None)
+                                else:
+                                        instruction["return"].append(value)
                                 
                         #2 is new server
                         elif instruction["action"] == 2:
                                 server = instruction["option"]
-                                data[server] = {}
-                                json.dump(data,open(filename,'w+'))
+                                if not server in data:
+                                        data[server] = {}
+                                        json.dump(data,open(filename,'w+'))
 
                         del jsonQueue[0]
-                        logging.debug(f'New queue: {jsonQueue}')                        
+                        logging.debug(f'New queue: {jsonQueue}')
+                else:
+                        time.sleep(0.1)
 
 def _start():
         global jsonQueue
