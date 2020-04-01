@@ -1,9 +1,9 @@
 import json, threading, asyncio, logging, time
 
 def _access_daemon(filename="data.json"):
-	logging.info('Access thread initialized.')
+  logging.info('Access thread initialized.')
   cache = cache(10)
-	#Customize this function to fit to the json structure used
+  #Customize this function to fit to the json structure used
   while True:
   	if len(jsonQueue) != 0:
     	instruction = jsonQueue[0]
@@ -46,7 +46,7 @@ def _access_daemon(filename="data.json"):
           else: time.sleep(0.1)
 
 def _start():
-	global jsonQueue
+  global jsonQueue
   jsonQueue = []
   daemon = threading.Thread(target=_access_daemon, args={'data.json'}, daemon=True)
   daemon.start()
