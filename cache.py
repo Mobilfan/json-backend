@@ -8,7 +8,7 @@ class listCache:
     def append(self, key, value):
         self._cacheContent.append({"key":key,"data":value})
         if len(self._cacheContent) > self.maxSize:
-            del _cacheContent[-1]
+            del self._cacheContent[-1]
 
     def get(self, key):
         result = None
@@ -49,7 +49,7 @@ class timedDictCache:
     def append(self, key, value):
         self._cacheContent[key] = (value, time.time())
         
-        if len(self._cacheContent) > maxSize:
+        if len(self._cacheContent) > self.maxSize:
             sortedDict = sorted(self._cacheContent.items(), key=lambda x: x[1])
             del self._cacheContent[sortedDict[0][0]]
 
