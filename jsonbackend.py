@@ -1,8 +1,9 @@
 import json, threading, asyncio, logging, time
+from cache import timedDictCache as newCache
 
 def _access_daemon(filename="data.json"):
   logging.info('Access thread initialized.')
-  cache = cache(10)
+  cache = newCache(10)
   #Customize this function to fit to the json structure used
   while True:
     if len(jsonQueue) != 0:
